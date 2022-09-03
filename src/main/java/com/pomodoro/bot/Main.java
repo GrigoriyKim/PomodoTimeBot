@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
 
-// Echo b Pomodoro bot с использованием библиотеки org.telegram:telegrambots:6.0.1
+// Echo b Pomodoro bot Г± ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­ГЁГҐГ¬ ГЎГЁГЎГ«ГЁГ®ГІГҐГЄГЁ org.telegram:telegrambots:6.0.1
 public class Main {
 
     private static final ConcurrentHashMap<Pomodoro.Timer, Long> userTimers = new ConcurrentHashMap<>();
@@ -61,25 +61,25 @@ public class Main {
                 String strMsg = update.getMessage().getText();
                 String user = update.getMessage().getChat().getFirstName();
                 Long chatId = update.getMessage().getChatId();
-                String descriptionMsg = "Добро пожаловать, " + user + "\n Меня зовут, PomodoroBot, Pomodoro тайм-менеджмент!" +
-                        "\nНапиши через пробел, время работы и время отдыха (в минутах) и количество повторений.";
+                String descriptionMsg = "Г„Г®ГЎГ°Г® ГЇГ®Г¦Г Г«Г®ГўГ ГІГј, " + user + "\n ГЊГҐГ­Гї Г§Г®ГўГіГІ, PomodoroBot, Pomodoro ГІГ Г©Г¬-Г¬ГҐГ­ГҐГ¤Г¦Г¬ГҐГ­ГІ!" +
+                        "\nГЌГ ГЇГЁГёГЁ Г·ГҐГ°ГҐГ§ ГЇГ°Г®ГЎГҐГ«, ГўГ°ГҐГ¬Гї Г°Г ГЎГ®ГІГ» ГЁ ГўГ°ГҐГ¬Гї Г®ГІГ¤Г»ГµГ  (Гў Г¬ГЁГ­ГіГІГ Гµ) ГЁ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©.";
 
                 if (strMsg.equals("/start")) {
                     strMsg(chatId, descriptionMsg);
-                    System.out.println(user + "использует PomodoroBot");
+                    System.out.println(user + "ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГІ PomodoroBot");
                     return;
                 }
                 var args = update.getMessage().getText().split(" ");
 
-                strMsg(chatId, "Сейчас: " + LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
-                strMsg(chatId, "Время работы: " + Long.parseLong(args[0]) + " мин");
-                strMsg(chatId, "Время отдыха: " + Long.parseLong(args[1]) + " мин");
+                strMsg(chatId, "Г‘ГҐГ©Г·Г Г±: " + LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
+                strMsg(chatId, "Г‚Г°ГҐГ¬Гї Г°Г ГЎГ®ГІГ»: " + Long.parseLong(args[0]) + " Г¬ГЁГ­");
+                strMsg(chatId, "Г‚Г°ГҐГ¬Гї Г®ГІГ¤Г»ГµГ : " + Long.parseLong(args[1]) + " Г¬ГЁГ­");
 
                 if (args.length > 2) {
                     count = Integer.parseInt(args[2]);
                 }
 
-                strMsg(chatId, "Повторений: " + count + "\nПриступим!");
+                strMsg(chatId, "ГЏГ®ГўГІГ®Г°ГҐГ­ГЁГ©: " + count + "\nГЏГ°ГЁГ±ГІГіГЇГЁГ¬!");
                 timeSetting(chatId, args);
                 System.out.println(userTimers.toString());
             }
@@ -107,25 +107,16 @@ public class Main {
             }
         }
 
-//        private void sendMsg(Long chatId, String msgStr) {
-//            SendMessage msg = new SendMessage(chatId.toString(), msgStr);
-//            try {
-//                execute(msg);
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         public void run() throws InterruptedException {
             while (true) {
-                System.out.printf("Количество таймеров пользователей " + userTimers.size() + "\n");
+                System.out.printf("ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГІГ Г©Г¬ГҐГ°Г®Гў ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ© " + userTimers.size() + "\n");
                 userTimers.forEach((time, userId) -> {
-                    System.out.printf("Проверка userId = %d, userTime = %s, now = %s\n", userId, time.toString(), Instant.now());
+                    System.out.printf("ГЏГ°Г®ГўГҐГ°ГЄГ  userId = %d, userTime = %s, now = %s\n", userId, time.toString(), Instant.now());
                     if (Instant.now().isAfter(time.time)) {
 
                         switch (time.timerType) {
-                            case WORK -> strMsg(userId, "Пора отдыхать, осталось " + (userTimers.size()/2) + " повторений.");
-                            case BREAK -> strMsg(userId, "Пора работать, осталось " + (userTimers.size()/2) + " повторений.");
+                            case WORK -> strMsg(userId, "ГЏГ®Г°Г  Г®ГІГ¤Г»ГµГ ГІГј, Г®Г±ГІГ Г«Г®Г±Гј " + (userTimers.size()/2) + " ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©.");
+                            case BREAK -> strMsg(userId, "ГЏГ®Г°Г  Г°Г ГЎГ®ГІГ ГІГј, Г®Г±ГІГ Г«Г®Г±Гј " + (userTimers.size()/2) + " ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©.");
                                 }
                                 userTimers.remove(time);
                             }
@@ -135,30 +126,5 @@ public class Main {
         }
     }
 
-//    static class EchoBot extends TelegramLongPollingBot {
-//
-//        @Override
-//        public String getBotUsername() {
-//            return "Echo bot";
-//        }
-//
-//        @Override
-//        public String getBotToken() {
-//            return "5711497797:AAFyOOuPvUN5_j-2Mj9ZoZ9qmhOVDVdAIx4";
-//        }
-//
-//        @Override
-//        public void onUpdateReceived(Update update) {
-//            if (update.hasMessage() && update.getMessage().hasText()) {
-//                SendMessage msg = new SendMessage(update.getMessage().getChatId().toString(),
-//                        update.getMessage().getText());
-//                try {
-//                    execute(msg);
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
 }
 
